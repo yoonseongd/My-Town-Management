@@ -12,7 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = (theme) => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     overflowX: "auto",
   },
   table: {
@@ -20,34 +20,23 @@ const styles = (theme) => ({
   },
 });
 
-const customer = [
-  {
-    id: 1,
-    image: "https://placeimg.com/64/64/any",
-    name: "adsf",
-    birthday: "111",
-    gender: "2",
-    job: "asdf",
-  },
-  {
-    id: 2,
-    image: "https://placeimg.com/64/64/any",
-    name: "asdfasdf",
-    birthday: "352",
-    gender: "asdf",
-    job: "qtqwr",
-  },
-  {
-    id: 3,
-    image: "https://placeimg.com/64/64/any",
-    name: "zxcv",
-    birthday: "djh",
-    gender: "87",
-    job: "mvb",
-  },
-];
-
 class App extends React.Component {
+  state = {
+    customers: "",
+  };
+
+  componentDidMount() {
+    this.callApi()
+      .then((res) => this.setState({ customers: res }))
+      .catch((err) => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch("/api/customers");
+    const body = await response.json();
+    return body;
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -64,19 +53,21 @@ class App extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customer.map((c) => {
-              return (
-                <Customer
-                  key={c.id}
-                  id={c.id}
-                  image={c.image}
-                  name={c.name}
-                  birthday={c.birthday}
-                  gender={c.gender}
-                  job={c.job}
-                />
-              );
-            })}
+            {this.state.customers
+              ? this.state.customers.map((c) => {
+                  return (
+                    <Customer
+                      key={c.id}
+                      id={c.id}
+                      image={c.image}
+                      name={c.name}
+                      birthday={c.birthday}
+                      gender={c.gender}
+                      job={c.job}
+                    />
+                  );
+                })
+              : ""}
           </TableBody>
         </Table>
       </Paper>
