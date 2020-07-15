@@ -1,7 +1,0 @@
-{
-"host":"management-tutorial.cqpjeoqguyg2.us-east-2.rds.amazonaws.com",
-"user": "user",
-"password":"Q7945613!",
-"port":"3306",
-"database":"management"
-}
